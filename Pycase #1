@@ -1,0 +1,67 @@
+# Import PyGame
+import pygame
+# Initialize PyGame
+pygame.init()
+
+# Set the screen size
+screen = pygame.display.set_mode([1700, 900])
+# Set name of application
+pygame.display.set_caption("Letter Sorter")
+
+# Set the font for the input and output text
+font = pygame.font.SysFont(None, 60)
+# Set the font for the title
+font2 = pygame.font.SysFont(None, 100)
+
+# Add the background
+background = pygame.image.load("background.png")
+
+# Set the maximum number of characters allowed
+max_chars = 50
+
+# Set the blank input string (so we can add on to it later)
+user_input_string = ""
+
+# Main code
+running = True
+while running:
+
+    # Quitting PyGame
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        
+        # Make sure that the string doesn't exceed 50 letters
+        elif event.type == pygame.KEYDOWN:
+            if len(user_input_string) < max_chars:
+                if event.unicode.isalpha():
+                    user_input_string += event.unicode
+
+        # If the user wants to delete some letter(s) that they wrote
+            if event.key == pygame.K_BACKSPACE:
+                user_input_string = user_input_string[:-1]
+
+    # Sort the string that has the user inputted letters
+    sorted_string = "".join(sorted(user_input_string))
+
+    # Add the title
+    title = font2.render("Sort Letters in Alphabetical Order", True, (0, 0, 0))
+    # Set the input string text
+    input_text = font.render("Input: " + user_input_string, True, (0, 0, 0))
+    # Set the output string text
+    output_text = font.render("Output: " + sorted_string, True, (0, 0, 0))
+
+    # Blit (display) the background and set the position
+    screen.blit(background, (0, 0))
+    # Blit (display) the title and set the position
+    screen.blit(title, (133, 150))
+    # Blit (display) the input string and set the position
+    screen.blit(input_text, (133, 300))
+    # Blit (display) the output string and set the position
+    screen.blit(output_text, (133, 430))
+
+    # Flip the display (updates the whole surface)
+    pygame.display.flip()
+
+# Final "QUIT" command
+pygame.quit()
